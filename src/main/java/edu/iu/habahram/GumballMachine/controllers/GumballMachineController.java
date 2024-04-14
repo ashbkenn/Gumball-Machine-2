@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@CrossOrigin
+@CrossOrigin(origins = "*")
 @RequestMapping("/gumballs")
 public class GumballMachineController {
 
@@ -41,6 +41,24 @@ public class GumballMachineController {
     public TransitionResult insertQuarter(@RequestBody TransitionRequest transitionRequest) {
         try {
             return gumballService.insertQuarter(transitionRequest.id());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @PutMapping("/eject-quarter")
+    public TransitionResult ejectQuarter(@RequestBody TransitionRequest transitionRequest) {
+        try {
+            return gumballService.ejectQuarter(transitionRequest.id());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @PutMapping("/turn-crank")
+    public TransitionResult turnCrank(@RequestBody TransitionRequest transitionRequest) {
+        try {
+            return gumballService.turnCrank(transitionRequest.id());
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
