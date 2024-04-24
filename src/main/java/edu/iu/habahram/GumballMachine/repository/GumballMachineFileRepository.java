@@ -1,6 +1,5 @@
 package edu.iu.habahram.GumballMachine.repository;
 
-import edu.iu.habahram.GumballMachine.model.GumballMachine;
 import edu.iu.habahram.GumballMachine.model.GumballMachineRecord;
 import edu.iu.habahram.GumballMachine.model.GumballMachineState;
 import org.springframework.stereotype.Repository;
@@ -18,9 +17,9 @@ import java.util.UUID;
 
 @Repository
 public class GumballMachineFileRepository implements IGumballRepository {
-    private String DATA_FOLDER_PATH = "data";
     private static final String NEW_LINE = System.lineSeparator();
     private static final String GUMBALL_DATABASE_NAME = "data/gumball-machines.txt";
+    private String DATA_FOLDER_PATH = "data";
 
     public GumballMachineFileRepository() {
         File dataDirectory = new File(DATA_FOLDER_PATH);
@@ -60,7 +59,7 @@ public class GumballMachineFileRepository implements IGumballRepository {
             List<String> data = Files.readAllLines(path);
             for (String line : data) {
                 if (line.trim().length() != 0) {
-                    if(line.split(",")[0].equals(id)) {
+                    if (line.split(",")[0].equals(id)) {
                         GumballMachineRecord r = GumballMachineRecord.fromLine(line);
                         return r;
                     }
@@ -73,6 +72,7 @@ public class GumballMachineFileRepository implements IGumballRepository {
     @Override
     public String save(GumballMachineRecord gumballMachineRecord) throws IOException {
         String id = gumballMachineRecord.getId();
+        System.out.println(id + " " + gumballMachineRecord);
         if (id != null) {
             update(gumballMachineRecord);
         } else {
@@ -101,10 +101,10 @@ public class GumballMachineFileRepository implements IGumballRepository {
         List<String> gumballsAsText = new ArrayList<>();
         for (GumballMachineRecord gumball : gumballs) {
             if (gumball.getId().equals(id)) {
-                if(record.getState() != null) {
+                if (record.getState() != null) {
                     gumball.setState(record.getState());
                 }
-                if(record.getCount() != null) {
+                if (record.getCount() != null) {
                     gumball.setCount(record.getCount());
                 }
             }

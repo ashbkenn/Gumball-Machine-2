@@ -1,26 +1,44 @@
 package edu.iu.habahram.GumballMachine.model;
 
 public class GumballMachine2 implements IGumballMachine {
-    private String id;
-    private IState soldOutState;
-    private IState noQuarterState;
-    private IState hasQuarterState;
-    private IState soldState;
-    private IState state;
-    private int count = 0;
+    String id;
+    IState soldOutState;
+    IState noQuarterState;
+    IState hasQuarterState;
+    IState soldState;
+
+    IState state;
+    int count = 0;
 
     public GumballMachine2(String id, String stateName, int count) {
-        this.id = id;
-        this.count = count;
-
-        // Initialize all states
         soldOutState = new SoldOutState(this);
         noQuarterState = new NoQuarterState(this);
         hasQuarterState = new HasQuarterState(this);
         soldState = new SoldState(this);
 
-        // Set initial state based on provided stateName
+        this.id = id;
+        this.count = count;
         changeTheStateTo(GumballMachineState.valueOf(stateName));
+    }
+
+    public IState getState() {
+        return state;
+    }
+
+    public void setState(IState state) {
+        this.state = state;
+    }
+
+    public Integer getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
+    }
+
+    public String getTheStateName() {
+        return state.getTheName();
     }
 
     @Override
@@ -41,37 +59,29 @@ public class GumballMachine2 implements IGumballMachine {
 
     @Override
     public void releaseBall() {
-        if (count > 0) {
-            System.out.println("A gumball comes rolling out the slot...");
-            count--;
-        }
+        count = count - 1;
+    }
+
+    @Override
+    public TransitionResult refill(int numGumballs) {
+        return state.refill(numGumballs);
     }
 
     @Override
     public void changeTheStateTo(GumballMachineState name) {
         switch (name) {
-            case NO_QUARTER:
-                state = noQuarterState;
-                break;
-            case HAS_QUARTER:
-                state = hasQuarterState;
-                break;
-            case OUT_OF_GUMBALLS:
-                state = soldOutState;
-                break;
-            case GUMBALL_SOLD:
-                state = soldState;
-                break;
+            case NO_QUARTER -> {
+                this.setState(noQuarterState);
+            }
+            case HAS_QUARTER -> {
+                this.setState(hasQuarterState);
+            }
+            case OUT_OF_GUMBALLS -> {
+                this.setState(soldOutState);
+            }
+            case GUMBALL_SOLD -> {
+                this.setState(soldState);
+            }
         }
-    }
-
-    @Override
-    public Integer getCount() {
-        return count;
-    }
-
-    @Override
-    public String getTheStateName() {
-        return state.getTheName();
     }
 }

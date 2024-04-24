@@ -94,5 +94,10 @@ public class GumballMachine implements IGumballMachine {
 
     }
 
+    @Override
+    public TransitionResult refill(int numGumballs) {
+        return null;
+    }
+
 
 }
